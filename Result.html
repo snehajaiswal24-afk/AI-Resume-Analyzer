@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Resume Analysis Results 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0; padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
+        overflow-x: hidden;
+    }
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #ffffffcc;
+        padding: 40px;
+        border-radius: 25px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+    h1 { color: #1e90ff; text-align: center; font-size: 2.5em; margin-bottom: 30px; }
+    h2 { color: #333; margin-bottom: 15px; border-bottom: 2px solid #1e90ff; display: inline-block; padding-bottom: 5px; }
+    .card { background: #f0f8ff; border-radius: 15px; padding: 20px; margin-bottom: 25px; transition: transform 0.3s; }
+    .card:hover { transform: scale(1.02); }
+    .missing { color: red; font-weight: bold; }
+    ul { padding-left: 20px; }
+    .chart { text-align: center; margin-top: 25px; }
+    .motivation, .future-role {
+        background: #fff7e6;
+        border-left: 5px solid #ff8c00;
+        padding: 15px; margin-top: 15px;
+        border-radius: 12px; font-size: 1em; color: #333;
+    }
+    .back-button {
+        display: inline-block; margin-top: 25px; text-decoration: none;
+        padding: 10px 20px; background: linear-gradient(45deg, #1e90ff, #00d4ff);
+        color: white; border-radius: 12px; transition: all 0.2s;
+    }
+    .back-button:hover { background: linear-gradient(45deg, #0b60b7, #00bfff); transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Resume Analysis Results ✅</h1>
+
+    <div class="card">
+        <h2>Extracted Skills:</h2>
+        <p>{{ extracted_skills }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Job Role Matches:</h2>
+        <ul>
+        {% for role, data in role_matches.items() %}
+            <li>
+                <strong>{{ role }}</strong> → {{ data.score }}%
+                <br>Matched: {{ data.matched }}
+                <br>Missing: <span class="missing">{{ data.missing }}</span>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    {% if dream_match %}
+    <div class="card">
+        <h2>Dream Job Matcher: {{ dream_match.role }}</h2>
+        <p>Match: {{ dream_match.score }}%</p>
+        <p>Missing Skills: <span class="missing">{{ dream_match.missing }}</span></p>
+        <div class="motivation">
+            {% for skill in dream_match.missing %}
+                {% if skill in motivation %}
+                    {{ motivation[skill] }}<br>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if future_suggestions %}
+    <div class="card">
+        <h2>Future Role Suggestions Based on Your Skills:</h2>
+        {% for role, data in future_suggestions.items() %}
+            <div class="future-role">
+                <strong>{{ role }}</strong> → Skill match: {{ data.score }}%<br>
+                Skills to Learn: <span class="missing">{{ data.missing }}</span>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="chart">
+        <h2>Skill Match Chart</h2>
+        <img src="{{ url_for('static', filename='chart.png') }}" width="700">
+    </div>
+
+    <div style="text-align:center;">
+        <a href="/" class="back-button">🔙 Back to Home</a>
+    </div>
+</div>
+</body>
+</html>
